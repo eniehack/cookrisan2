@@ -1,0 +1,4 @@
+dev:
+  dialect: sqlite3
+  datasource: test.sqlite
+  dir: db/migrations
