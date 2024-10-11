@@ -77,11 +77,21 @@ func main() {
 }
 
 func insertIngredient(db *sql.Tx, ingredient string, recipe_id string) error {
-	ingredient_id := uuid.NewString()
-	if _, err := db.Exec("INSERT INTO crawled_ingredient (id, name) VALUES (?, ?);", ingredient_id, ingredient); err != nil {
+	var ingredient_id string
+	if err := db.QueryRow("SELECT id FROM crawled_ingredient WHERE name = ?;", ingredient).Scan(&ingredient_id); err != nil && err != sql.ErrNoRows {
 		return err
+	} else if err == sql.ErrNoRows {
+		ingredient_id = uuid.NewString()
+		if _, err := db.Exec("INSERT INTO crawled_ingredient (id, name) VALUES (?, ?);", ingredient_id, ingredient); err != nil {
+			return err
+		}
 	}
-	if _, err := db.Exec("INSERT INTO recipe_ingredient (id, recipe_id, ingredient_id) VALUES (?, ?, ?);", uuid.NewString(), recipe_id, ingredient_id); err != nil {
+	if _, err := db.Exec(
+		"INSERT INTO recipe_ingredient (id, recipe_id, ingredient_id) VALUES (?, ?, ?);",
+		uuid.NewString(),
+		recipe_id,
+		ingredient_id,
+	); err != nil {
 		return err
 	}
 	return nil
