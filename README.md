@@ -12,7 +12,7 @@
 ### 構築
 
 1. git clone && cd
-2. sql-migrate up -config db/migrate.yml -env=dev
+2. `sql-migrate up -config db/migrate.yml -env=dev`
 
 - バイナリのビルド: `make`
   - `cmd/crawler`にあるものをbuildした場合、`bin/crawler`にバイナリが置かれる
