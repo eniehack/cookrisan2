@@ -1,6 +1,8 @@
 module github.com/eniehack/cookrisan2
 
-go 1.23.2
+go 1.23
+
+toolchain go1.23.2
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.0
